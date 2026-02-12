@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EKYAM Admin Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --card: rgba(15,18,40,0.9);
+  --neon: #4f8cff;
+  --accent: #c084fc;
+  --gold: #ffd84d;
+  --text: #eaeaf0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Poppins; }
+
+body {
+  background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.95)),
+              url("assets/bg-ekyam.jpg") center / cover fixed;
+  color: var(--text);
+}
+
+header {
+  padding: 30px;
+  text-align: center;
+}
+
+header h1 { color: var(--gold); }
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+section {
+  background: var(--card);
+  padding: 30px;
+  border-radius: 24px;
+  margin-bottom: 40px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+}
+
+section h2 {
+  margin-bottom: 20px;
+  color: var(--neon);
+}
+
+/* FORM */
+.form-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+button {
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(90deg, var(--neon), var(--accent));
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.list {
+  margin-top: 20px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.05);
+  padding: 14px 18px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+}
+
+.actions button {
+  margin-left: 10px;
+  background: transparent;
+  border: 1px solid var(--neon);
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #a1a1aa;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>EKYAM 2K26 – Admin Panel</h1>
+  <p>Manage Events, Sponsors & Gallery</p>
+</header>
+
+<main>
+
+<!-- EVENTS CRUD -->
+<section>
+  <h2>Events</h2>
+  <div class="form-row">
+    <input id="eventName" placeholder="Event name">
+    <button onclick="addEvent()">Add Event</button>
+  </div>
+  <div id="eventList" class="list"></div>
+</section>
+
+<!-- SPONSORS CRUD -->
+<section>
+  <h2>Sponsors</h2>
+  <div class="form-row">
+    <input id="sponsorName" placeholder="Sponsor name">
+    <button onclick="addSponsor()">Add Sponsor</button>
+  </div>
+  <div id="sponsorList" class="list"></div>
+</section>
+
+<!-- GALLERY CRUD -->
+<section>
+  <h2>Gallery</h2>
+  <div class="form-row">
+    <input id="galleryItem" placeholder="Image filename (gallery1.jpeg)">
+    <button onclick="addGallery()">Add Image</button>
+  </div>
+  <div id="galleryList" class="list"></div>
+</section>
+
+</main>
+<input type="text" id="galleryInput" placeholder="Image URL">
+<button onclick="addGallery()">Add Image</button>
+
+<div id="galleryPreview"></div>
+
+<footer>
+© 2026 EKYAM Admin Dashboard
+</footer>
+
+<script>
+/* STORAGE HELPERS */
+const getData = key => JSON.parse(localStorage.getItem(key)) || [];
+const setData = (key, data) => localStorage.setItem(key, JSON.stringify(data));
+
+/* EVENTS */
+function addEvent() {
+  const name = eventName.value;
+  if (!name) return;
+  const events = getData("events");
+  events.push(name);
+  setData("events", events);
+  eventName.value = "";
+  renderEvents();
+}
+
+function deleteEvent(i) {
+  const events = getData("events");
+  events.splice(i,1);
+  setData("events", events);
+  renderEvents();
+}
+
+function renderEvents() {
+  eventList.innerHTML = "";
+  getData("events").forEach((e,i) => {
+    eventList.innerHTML += `
+      <div class="item">
+        ${e}
+        <div class="actions">
+          <button onclick="deleteEvent(${i})">Delete</button>
+        </div>
+      </div>`;
+  });
+}
+
+/* SPONSORS */
+function addSponsor() {
+  const name = sponsorName.value;
+  if (!name) return;
+  const sponsors = getData("sponsors");
+  sponsors.push(name);
+  setData("sponsors", sponsors);
+  sponsorName.value = "";
+  renderSponsors();
+}
+
+function deleteSponsor(i) {
+  const sponsors = getData("sponsors");
+  sponsors.splice(i,1);
+  setData("sponsors", sponsors);
+  renderSponsors();
+}
+
+function renderSponsors() {
+  sponsorList.innerHTML = "";
+  getData("sponsors").forEach((s,i) => {
+    sponsorList.innerHTML += `
+      <div class="item">
+        ${s}
+        <div class="actions">
+          <button onclick="deleteSponsor(${i})">Delete</button>
+        </div>
+      </div>`;
+  });
+}
+
+/* GALLERY */
+function addGallery() {
+  const img = galleryItem.value;
+  if (!img) return;
+  const gallery = getData("gallery");
+  gallery.push(img);
+  setData("gallery", gallery);
+  galleryItem.value = "";
+  renderGallery();
+}
+
+function deleteGallery(i) {
+  const gallery = getData("gallery");
+  gallery.splice(i,1);
+  setData("gallery", gallery);
+  renderGallery();
+}
+
+function renderGallery() {
+  galleryList.innerHTML = "";
+  getData("gallery").forEach((g,i) => {
+    galleryList.innerHTML += `
+      <div class="item">
+        ${g}
+        <div class="actions">
+          <button onclick="deleteGallery(${i})">Delete</button>
+        </div>
+      </div>`;
+  });
+}
+
+/* INITIAL LOAD */
+renderEvents();
+renderSponsors();
+renderGallery();
+</script>
+<script src="script.js"></script>
+</body>
+</html>

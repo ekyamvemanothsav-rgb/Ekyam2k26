@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EKYAM Admin Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --card: rgba(15,18,40,0.85);
+  --neon: #4f8cff;
+  --accent: #c084fc;
+  --gold: #ffd84d;
+  --text: #eaeaf0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)),
+    url("assets/bg-ekyam.jpg") center / cover fixed no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+}
+
+/* LOGIN CARD */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  backdrop-filter: blur(14px);
+  padding: 45px 40px;
+  border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+  text-align: center;
+}
+
+.login-card h1 {
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.login-card p {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin-bottom: 30px;
+}
+
+/* INPUTS */
+.input-group {
+  text-align: left;
+  margin-bottom: 22px;
+}
+
+.input-group label {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  display: block;
+  color: #c7d2fe;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: none;
+  outline: none;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.input-group input::placeholder {
+  color: #9ca3af;
+}
+
+/* BUTTON */
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(90deg, var(--neon), var(--accent));
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+
+  box-shadow: 0 0 30px rgba(124,124,255,0.6);
+  transition: transform 0.3s ease;
+}
+
+.login-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ERROR */
+.error {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: #ff6b6b;
+  display: none;
+}
+
+/* FOOTER */
+.footer-text {
+  margin-top: 30px;
+  font-size: 0.8rem;
+  color: #a1a1aa;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-card">
+  <h1>Admin Login</h1>
+  <p>EKYAM 2K26 Control Panel</p>
+
+  <div class="input-group">
+    <label>Username</label>
+    <input type="text" id="username" placeholder="Enter admin username">
+  </div>
+
+  <div class="input-group">
+    <label>Password</label>
+    <input type="password" id="password" placeholder="Enter password">
+  </div>
+
+  <button class="login-btn" onclick="login()">Login</button>
+
+  <div id="error" class="error">
+    ❌ Invalid username or password
+  </div>
+
+  <div class="footer-text">
+    © 2026 EKYAM | Admin Access Only
+  </div>
+</div>
+
+<script>
+function login() {
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+
+  // CHANGE THESE CREDENTIALS
+  const ADMIN_USER = "ekyamadmin";
+  const ADMIN_PASS = "ekyam@2026";
+
+  if (user === ADMIN_USER && pass === ADMIN_PASS) {
+    window.location.href = "admin.html";
+  } else {
+    document.getElementById("error").style.display = "block";
+  }
+}
+</script>
+
+</body>
+</html>
